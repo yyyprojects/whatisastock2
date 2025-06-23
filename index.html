@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: A Visual Guide to Stocks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: The infographic follows a linear, top-to-bottom narrative designed for a beginner. It starts with the most basic concept (the pizza analogy), builds to core mechanics (stock types, rights), explains the market process (IPO flowchart), and ends with the regulatory context (the SEC). This structure tells a complete story, making complex information digestible in a single scroll. -->
+    <!-- Visualization & Content Choices:
+        - Report Info: "What is a Stock?" -> Goal: Inform. -> Viz: HTML/CSS Pizza Graphic. -> Justification: A simple, universal analogy is best visualized directly and simply.
+        - Report Info: Common vs. Preferred Stock comparison -> Goal: Compare. -> Viz: Chart.js Radar Chart. -> Justification: A radar chart is ideal for comparing two items across multiple, distinct attributes (risk, voting, dividends) in a single, easy-to-understand graphic.
+        - Report Info: How profit/loss is made -> Goal: Inform. -> Viz: Chart.js Bar Chart. -> Justification: A bar chart provides a clear, quantitative visualization of a capital gain example.
+        - Report Info: The IPO Process -> Goal: Organize/Show a process. -> Viz: HTML/CSS Flowchart. -> Justification: A visual flowchart is more intuitive for understanding a multi-step process than text alone. Implemented with styled divs and borders to adhere to NO SVG/Mermaid rule.
+        - Report Info: Shareholder Rights -> Goal: Organize. -> Viz: HTML/CSS Icon Grid. -> Justification: An icon grid breaks up a list into visually engaging, distinct points.
+        - Report Info: Stock Categories -> Goal: Compare. -> Viz: Styled HTML Cards with Unicode icons. -> Justification: Cards with icons allow for quick scanning and comparison of different investment philosophies.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .gradient-text { background: linear-gradient(to right, #004E89, #1A659E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-[#E8E9EB]">
+
+    <div class="max-w-5xl mx-auto bg-white shadow-2xl">
+
+        <header class="bg-[#004E89] text-white p-8 md:p-12 text-center">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">WHAT IS A STOCK?</h1>
+            <p class="text-lg md:text-xl text-[#74B3CE] max-w-3xl mx-auto">An Illustrated Guide to Owning a Piece of a Company</p>
+        </header>
+
+        <main class="p-6 md:p-10 space-y-16">
+
+            <section id="what-is-it">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-2">It All Starts With a Simple Idea</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">To understand stocks, forget Wall Street and think about a pizza. A company can be sliced up just like a pizza to raise money for growth. Each slice is a real piece of ownership.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-slate-50 rounded-lg p-6 shadow-md border border-slate-200 text-center">
+                        <div class="relative w-48 h-48 mx-auto mb-4">
+                            <div class="absolute inset-0 bg-yellow-300 rounded-full"></div>
+                            <div class="absolute inset-0 rounded-full" style="background-color: #FF6B35; clip-path: polygon(50% 50%, 100% 50%, 100% 0, 50% 0);"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-dashed border-slate-400"></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#004E89]">One Slice = One SHARE</h3>
+                        <p class="text-slate-500">Owning a 'share' of stock makes you a part-owner of the entire business—its assets, brand, and future profits.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl mt-1">📈</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-[#1A659E]">Why Companies Sell Stock</h3>
+                                <p class="text-slate-600">The primary reason is to raise **capital** (money) to fund expansion, innovate new products, and hire talent without taking on debt.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl mt-1">🛡️</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-[#1A659E]">Your Protection: Limited Liability</h3>
+                                <p class="text-slate-600">As a shareholder, you are not personally responsible for the company's debts. The most you can lose is the amount you invested.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="types">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-2">The Two Faces of Stock</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">Not all stock is created equal. Companies issue two main types, Common and Preferred, which offer different balances of risk, reward, and control to investors.</p>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-6 shadow-md border border-slate-200">
+                    <div class="chart-container">
+                        <canvas id="stockTypesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profit-loss" class="bg-[#004E89] text-white rounded-lg p-8 shadow-lg">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-2">How You Make (or Lose) Money</h2>
+                    <p class="text-[#74B3CE] max-w-2xl mx-auto">There are two main ways to profit: Dividends (a share of profits paid to you) and Capital Gains (selling your stock for more than you paid).</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="font-bold text-xl mb-2 text-[#F7C548]">Visualizing a Capital Gain</h3>
+                        <p class="mb-4">This chart shows a simple example of buying a stock at $100 and selling it later for $150, resulting in a $50 profit per share.</p>
+                        <div class="chart-container" style="height: 250px; max-height: 250px;">
+                            <canvas id="capitalGainsChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="text-center">
+                        <div class="text-7xl font-black text-[#F7C548]">$50</div>
+                        <div class="text-2xl font-bold">PROFIT PER SHARE</div>
+                        <div class="h-1 w-24 bg-[#FF6B35] mx-auto my-4"></div>
+                        <p class="text-slate-300">Of course, if the selling price is lower than the buy price, you incur a capital loss. The value of stocks can go down as well as up.</p>
+                     </div>
+                </div>
+            </section>
+            
+            <section id="flowchart">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-2">The Journey to the Public Market</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">How does a private company's stock end up in your brokerage account? It follows a two-stage path from creation to public trading.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-[#1A659E] text-white p-6 rounded-lg shadow-md w-full">
+                            <div class="text-3xl mb-2">🏢</div>
+                            <h3 class="font-bold">1. Primary Market (IPO)</h3>
+                            <p class="text-sm">A company creates new shares and sells them in an Initial Public Offering (IPO). The money goes directly to the company.</p>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center">
+                        <div class="text-5xl font-bold text-slate-300">→</div>
+                    </div>
+                    <div class="md:hidden text-center my-4 text-4xl font-bold text-slate-300">↓</div>
+                     <div class="flex flex-col items-center">
+                        <div class="bg-[#FF6B35] text-white p-6 rounded-lg shadow-md w-full">
+                             <div class="text-3xl mb-2">🔄</div>
+                            <h3 class="font-bold">2. Secondary Market</h3>
+                            <p class="text-sm">Those shares are now traded between investors on an exchange (like NYSE or NASDAQ). The company isn't involved in these trades.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rights">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-2">Your Rights as a Shareholder</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">Owning stock gives you more than just financial potential; it grants you specific legal rights as a part-owner of the business.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">🗳️</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Vote</h3>
+                        <p class="text-sm text-slate-500">Influence the company by electing the Board of Directors.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">💵</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Profits</h3>
+                        <p class="text-sm text-slate-500">Receive a share of profits distributed as dividends.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">📰</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Information</h3>
+                        <p class="text-sm text-slate-500">Access public financial reports like the annual 10-K.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">⚖️</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Sue</h3>
+                        <p class="text-sm text-slate-500">Take legal action against management for wrongful acts.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">💸</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Transfer</h3>
+                        <p class="text-sm text-slate-500">Freely sell your shares to others on an exchange.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border text-center">
+                        <div class="text-4xl mb-3">🏦</div>
+                        <h3 class="font-bold text-lg text-[#004E89]">Right to Assets</h3>
+                        <p class="text-sm text-slate-500">Claim a portion of assets if the company liquidates.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="categories">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-2">Investor Shorthand: Stock Categories</h2>
+                    <p class="text-slate-600 max-w-2xl mx-auto">Investors use labels to quickly describe a stock's investment profile. These aren't rigid rules, but helpful categories.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="border-t-4 border-[#FF6B35] bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-2">🚀 Growth Stocks</h3>
+                        <p class="text-slate-600">Fast-growing companies that reinvest profits to expand. The bet is on future price increases, not current income.</p>
+                    </div>
+                     <div class="border-t-4 border-[#F7C548] bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-2">💎 Value Stocks</h3>
+                        <p class="text-slate-600">Stocks that seem undervalued by the market. Investors buy them hoping the price will rise to its true worth.</p>
+                    </div>
+                     <div class="border-t-4 border-[#1A659E] bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-2">💰 Income Stocks</h3>
+                        <p class="text-slate-600">Stable companies that pay regular dividends, providing a steady income stream for investors.</p>
+                    </div>
+                     <div class="border-t-4 border-[#004E89] bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-2">🏆 Blue-Chip Stocks</h3>
+                        <p class="text-slate-600">Large, well-known, financially sound companies with a history of reliable performance.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-[#333333] text-white p-8 mt-10 text-center">
+            <div class="text-5xl mb-4">🛡️</div>
+            <h2 class="text-2xl font-bold text-[#F7C548] mb-2">The Market Guardian: The SEC</h2>
+            <p class="text-slate-300 max-w-3xl mx-auto">The U.S. Securities and Exchange Commission (SEC) is a government agency whose mission is to protect investors, maintain fair markets, and ensure companies disclose key financial information to the public.</p>
+        </footer>
+    </div>
+    
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const wrapLabel = (label) => {
+        if (label.length <= 16) return label;
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > 16) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) lines.push(currentLine);
+        return lines;
+    };
+    
+    const sharedTooltipCallback = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        } else {
+                          return label;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    const radarCtx = document.getElementById('stockTypesChart');
+    if (radarCtx) {
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Voting Rights', 
+                    'Growth Potential', 
+                    'Dividend Stability', 
+                    'Liquidation Priority'
+                ],
+                datasets: [{
+                    label: 'Common Stock',
+                    data: [5, 5, 2, 1],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 107, 53, 0.2)',
+                    borderColor: '#FF6B35',
+                    pointBackgroundColor: '#FF6B35',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#FF6B35'
+                }, {
+                    label: 'Preferred Stock',
+                    data: [1, 2, 5, 4],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 78, 137, 0.2)',
+                    borderColor: '#004E89',
+                    pointBackgroundColor: '#004E89',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#004E89'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: { font: { size: 14, weight: 'bold' }, color: '#333' },
+                        ticks: {
+                            display: false,
+                            stepSize: 1,
+                            max: 5,
+                            min: 0
+                        }
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipCallback.plugins,
+                    legend: {
+                        position: 'top',
+                        labels: { font: { size: 14, weight: 'bold' } }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Common vs. Preferred Stock Attributes',
+                        font: { size: 18, weight: 'bold' },
+                        color: '#333',
+                        padding: { bottom: 20 }
+                    }
+                }
+            }
+        });
+    }
+
+    const gainsCtx = document.getElementById('capitalGainsChart');
+    if (gainsCtx) {
+        new Chart(gainsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Buy Price', 'Sell Price'],
+                datasets: [{
+                    label: 'Price ($)',
+                    data: [100, 150],
+                    backgroundColor: ['#1A659E', '#F7C548'],
+                    borderColor: ['#004E89', '#FF6B35'],
+                    borderWidth: 2,
+                    barPercentage: 0.5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                 scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                        ticks: { color: 'white', font: { weight: 'bold' } }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: 'white', font: { weight: 'bold', size: 14 } }
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipCallback.plugins,
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
